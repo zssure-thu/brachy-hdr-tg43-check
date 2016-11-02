@@ -3,8 +3,8 @@
 *.pyc
 
 # Pycharm files
-/.idea
+.idea/
 
 # venv
-/venv
+venv/
 

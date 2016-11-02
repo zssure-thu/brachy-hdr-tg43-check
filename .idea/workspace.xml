@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdaa372d-44f9-4065-b162-871c3897a2c0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/myfile.txt" afterPath="$PROJECT_DIR$/data/myfile.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/brachy-tg43-dosecheck.iml" afterPath="$PROJECT_DIR$/.idea/brachy-tg43-dosecheck.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/myfile.txt" afterPath="$PROJECT_DIR$/data/myfile.txt" />
     </list>
     <ignored path="brachy-tg43-dosecheck.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -411,6 +406,14 @@
       <option name="presentableId" value="Default" />
       <updated>1477990380893</updated>
     </task>
+    <task id="LOCAL-00001" summary="Created class structure to hold plan details.&#10;">
+      <created>1478045660107</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1478045660107</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
