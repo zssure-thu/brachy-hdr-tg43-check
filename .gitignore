@@ -1,0 +1,10 @@
+# Ignore compiled Python files #
+################################
+*.pyc
+
+# Pycharm files
+/.idea
+
+# venv
+/venv
+
