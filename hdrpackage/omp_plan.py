@@ -1,8 +1,3 @@
-import dicom
-import os
-from itertools import starmap
-
-
 class BrachyPlan(object):
     def __init__(self, ds):
         self.ds = ds
@@ -15,6 +10,8 @@ class BrachyPlan(object):
         self.treatment_model = ds.TreatmentMachineSequence[0].TreatmentMachineName
         self.ref_air_kerma_rate = float(ds.SourceSequence[0].ReferenceAirKermaRate)
         self.channels = self.get_channel_dwell_times()
+        self.total_number_dwells = sum([len(i) for i in self.channels])
+        self.half_life = float(ds.SourceSequence[0].SourceIsotopeHalfLife)
 
     def save_to_txt(self):
         with open("data\\output.txt", "w") as f:
@@ -33,7 +30,6 @@ class BrachyPlan(object):
         channel_dwells = []
         for c in range(len(self.ds.ApplicationSetupSequence[0].ChannelSequence)):
             total_channel_time = float(self.ds.ApplicationSetupSequence[0].ChannelSequence[c].ChannelTotalTime)
-            total_time_weight = float(self.ds.ApplicationSetupSequence[0].ChannelSequence[c].FinalCumulativeTimeWeight)
             dwell_weights = []
             dwells_list = []
             number_of_dwells = int(self.ds.ApplicationSetupSequence[0].ChannelSequence[c].NumberOfControlPoints / 2)
@@ -67,11 +63,15 @@ class BrachyPlan(object):
             self.dwell_time = d_time
 
 
-file_path = r"data//"
-file_name = r'RP.1.3.6.1.4.1.2452.6.2051579269.1225177353.3198701187.1732862112.dcm'
+class PointComparison(object):
+    def __init__(self, point_name, omp_dose, pytg43_dose):
+        self.point_name = point_name
+        self.omp_dose = omp_dose
+        self.pytg43_dose = pytg43_dose
+        self.abs_difference = omp_dose-pytg43_dose
+        self.percentage_difference = 100*((self.omp_dose/self.pytg43_dose)-1)
 
-ds_input = dicom.read_file(os.path.join(file_path, file_name))
 
-my_plan = BrachyPlan(ds_input)
-
+if __name__ == "__main__":
+    print("Code ran successfully")
 
