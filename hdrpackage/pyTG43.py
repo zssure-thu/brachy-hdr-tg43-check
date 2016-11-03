@@ -117,19 +117,19 @@ def linear_interp_2d(xdata, ydata, zdata, xnew, ynew):
     return znew
 
 
-def get_radial_dose(radialDose, mySource, myPoint):
+def get_radial_dose(radial_dose_in, dwell_in, point_in):
     """
     Calculate the radial dose function value
     """
-    R = pdist([[mySource.x, mySource.y, mySource.z],
-               [myPoint.x, myPoint.y, myPoint.z]])
-    if R in radialDose.r_cm:
-        return radialDose.gL[radialDose.r_cm.index(R)]
-    elif R > max(radialDose.r_cm) or R < min(radialDose.r_cm):
-        nrVal = find_nearest(np.array(radialDose.r_cm), R)
-        return radialDose.gL[radialDose.r_cm.index(nrVal)]
+    R = pdist([[dwell_in.x, dwell_in.y, dwell_in.z],
+               [point_in.x, point_in.y, point_in.z]])
+    if R in radial_dose_in.r_cm:
+        return radial_dose_in.gL[radial_dose_in.r_cm.index(R)]
+    elif R > max(radial_dose_in.r_cm) or R < min(radial_dose_in.r_cm):
+        nrVal = find_nearest(np.array(radial_dose_in.r_cm), R)
+        return radial_dose_in.gL[radial_dose_in.r_cm.index(nrVal)]
     else:
-        return log_interp(radialDose.r_cm, radialDose.gL, R)
+        return log_interp(radial_dose_in.r_cm, radial_dose_in.gL, R)
 
 
 def get_anisotropy_function(anisotropy_function, my_source, my_point):
@@ -269,9 +269,9 @@ def make_source_trains(source_class):
         for source in channel:
             source_train.append(
                 SourcePosition(
-                    x=source.coords[0],
-                    y=source.coords[1],
-                    z=source.coords[2],
+                    x=source.coords[0]/10,  # lateral
+                    y=source.coords[2]/10,  # sup-inf
+                    z=source.coords[1]/10,  # ant-post
                     apparent_activity=10,
                     dwell_time=source.dwell_time,
                     Sk=source_class.ref_air_kerma_rate,
@@ -284,18 +284,18 @@ def make_source_trains(source_class):
 def calculate_dose(source_train_in, poi_in):
     dose = 0
     my_point = PointPosition(
-        poi_in.coords[0],
-        poi_in.coords[1],
-        poi_in.coords[2])
+        poi_in.coords[0]/10,  # lateral
+        poi_in.coords[2]/10,  # sup-inf
+        poi_in.coords[1]/10)  # ant-post
     for dwell in source_train_in:
         my_dose = calculate_my_dose(
             dwell,
             my_point,
             anisotropyFunc,
             radialDose)
-        dose += my_dose.dose_total_out.astype(float)
+        dose += my_dose.dose_total_out
     print("%.3f" % dose)
-    return dose
+    return dose.tolist()[0]
 
 # radialDose = make_radial_dose(read_file(r'sourcedata\\v2r_ESTRO_radialDose.csv'))
 # anisotropyFunc = make_radial_dose(read_file(r'sourcedata\\v2r_ESTRO_anisotropyFunction.csv'))

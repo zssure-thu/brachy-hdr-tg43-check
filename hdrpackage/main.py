@@ -20,6 +20,3 @@ for poi in points_of_interest:
                     omp_dose=poi.dose,
                     pytg43_dose=my_dose)
     print("Percentage difference = %.2f"%point_compare.percentage_difference)
-
-print('here')
-
