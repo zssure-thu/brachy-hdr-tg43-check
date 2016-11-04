@@ -50,7 +50,7 @@ def main():
             plan_number = int(input("Select plan number: "))-1
             plan_name = available_plans[plan_number]
             break
-        except IndexError:
+        except (ValueError, IndexError):
             print("Please enter a valid plan number")
 
     print("Fetching: %s, %s, %s" %(patient_id, case_name, plan_name))
