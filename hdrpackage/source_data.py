@@ -80,9 +80,9 @@ def find_nearest(array, value):
     return array[idx]
 
 radialDose = make_radial_dose(
-    read_file(r'source_files\\v2r_ESTRO_radialDose.csv'))
+    read_file(r'hdrpackage\\source_files\\v2r_ESTRO_radialDose.csv'))
 anisotropyFunc = make_anisotropy_function(
-    read_file(r'source_files\\v2r_ESTRO_anisotropyFunction.csv'))
+    read_file(r'hdrpackage\\source_files\\v2r_ESTRO_anisotropyFunction.csv'))
 
 if __name__ == "__main__":
     print('Done')

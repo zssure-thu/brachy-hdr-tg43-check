@@ -2,7 +2,6 @@ class BrachyPlan(object):
     def __init__(self, ds):
         self.ds = ds
         self.applicator = self.ds.ApplicationSetupSequence[0][0x300b, 0x100f].value
-        self.save_to_txt()
         self.points = self.get_poi()
         self.channel_numbers = self.get_channel_numbers()
         self.prescription = float(
@@ -12,10 +11,6 @@ class BrachyPlan(object):
         self.channels = self.get_channel_dwell_times()
         self.total_number_dwells = sum([len(i) for i in self.channels])
         self.half_life = float(ds.SourceSequence[0].SourceIsotopeHalfLife)
-
-    def save_to_txt(self):
-        with open("data\\output.txt", "w") as f:
-            print(self.ds, file=f)
 
     def get_channel_numbers(self):
         return [int(x.SourceApplicatorID) for x in self.ds.ApplicationSetupSequence[0].ChannelSequence]
