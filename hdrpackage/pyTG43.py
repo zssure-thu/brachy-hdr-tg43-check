@@ -1,3 +1,5 @@
+"""Perform TG43 calculations"""
+
 from __future__ import division
 
 from scipy.spatial.distance import pdist
@@ -67,9 +69,9 @@ def get_geometry_function(my_source, my_point):
     Gl = []
     ##################################################################
     R2 = pdist([[my_source.x, my_source.y, my_source.z], [
-               my_point.x, my_point.y, my_point.z - (my_source.L / 2)]])
+        my_point.x, my_point.y, my_point.z - (my_source.L / 2)]])
     R1 = pdist([[my_source.x, my_source.y, my_source.z], [
-               my_point.x, my_point.y, my_point.z + (my_source.L / 2)]])
+        my_point.x, my_point.y, my_point.z + (my_source.L / 2)]])
     ###################################################################
     R = pdist([[my_source.x, my_source.y, my_source.z],
                [my_point.x, my_point.y, my_point.z]])
@@ -86,9 +88,9 @@ def get_geometry_function(my_source, my_point):
         Gl = beta / (my_source.L * R * np.sin(theta))
 
     Glout = Gl / GlRef
-#    print  "Gl = %.3f, Glref = %.3f"%(Gl,GlRef)
-#    print  "thl = %.3f, th2 = %.3f"%(theta1,theta2)
-#    print  "R1 = %.3f, R2 = %.3f"%(R1,R2)
+    #    print  "Gl = %.3f, Glref = %.3f"%(Gl,GlRef)
+    #    print  "thl = %.3f, th2 = %.3f"%(theta1,theta2)
+    #    print  "R1 = %.3f, R2 = %.3f"%(R1,R2)
     return Glout
 
 
@@ -144,7 +146,8 @@ def get_anisotropy_function(anisotropy_function, my_source, my_point):
         return anisotropy_function.F[
             anisotropy_function.theta.index(theta)][
             anisotropy_function.r_cm.index(R)]
-    elif R > max(anisotropy_function.r_cm) or R < min(anisotropy_function.r_cm) or theta > max(anisotropy_function.theta) or theta < min(anisotropy_function.theta):
+    elif R > max(anisotropy_function.r_cm) or R < min(anisotropy_function.r_cm) or theta > max(
+            anisotropy_function.theta) or theta < min(anisotropy_function.theta):
         nrValR = find_nearest(np.array(anisotropy_function.r_cm), R)
         nrValtheta = find_nearest(np.array(anisotropy_function.theta), theta)
         return anisotropy_function.F[
@@ -217,7 +220,7 @@ def calculate_my_dose(my_source, my_point, anisotropy_function, radial_dose_func
         anisotropy_function, my_source, my_point)
     geometry_func_val = get_geometry_function(my_source, my_point)
     dose_rate_out = my_source.Sk * my_source.dose_rate_constant * geometry_func_val * \
-        anisotropy_func_val * radial_dose_val * (1 / 100)
+                    anisotropy_func_val * radial_dose_val * (1 / 100)
     dose_total_out = dose_rate_out * (my_source.dwellTime / (60 * 60))
     return DosePointClass(
         my_source,
@@ -259,6 +262,7 @@ class SpecialPointsClass:
             print("x = %.1f, y = %.1f, z = %.1f" %
                   (self.xPoints, self.yPoints, self.zPoints))
 
+
 """x = out of plane, y = vertical, z = source axis"""
 """Distances in cm"""
 
@@ -269,9 +273,9 @@ def make_source_trains(source_class):
         for source in channel:
             source_train.append(
                 SourcePosition(
-                    x=source.coords[0]/10,  # lateral
-                    y=source.coords[2]/10,  # sup-inf
-                    z=source.coords[1]/10,  # ant-post
+                    x=source.coords[0] / 10,  # lateral
+                    y=source.coords[2] / 10,  # sup-inf
+                    z=source.coords[1] / 10,  # ant-post
                     apparent_activity=10,
                     dwell_time=source.dwell_time,
                     Sk=source_class.ref_air_kerma_rate,
@@ -284,9 +288,9 @@ def make_source_trains(source_class):
 def calculate_dose(source_train_in, poi_in):
     dose = 0
     my_point = PointPosition(
-        poi_in.coords[0]/10,  # lateral
-        poi_in.coords[2]/10,  # sup-inf
-        poi_in.coords[1]/10)  # ant-post
+        poi_in.coords[0] / 10,  # lateral
+        poi_in.coords[2] / 10,  # sup-inf
+        poi_in.coords[1] / 10)  # ant-post
     for dwell in source_train_in:
         my_dose = calculate_my_dose(
             dwell,
@@ -297,39 +301,6 @@ def calculate_dose(source_train_in, poi_in):
     print("%.3f" % dose)
     return dose.tolist()[0]
 
-# radialDose = make_radial_dose(read_file(r'sourcedata\\v2r_ESTRO_radialDose.csv'))
-# anisotropyFunc = make_radial_dose(read_file(r'sourcedata\\v2r_ESTRO_anisotropyFunction.csv'))
-# numSources = 1
-# #xSource = [0,0,0,0,0,1,1,1,1,1,1,-1,-1,-1,-1]
-# #ySource = [0,0,0,0,0,-1,-1,-1,-1,-1,-1,-2,-2,-2,-2]
-# #zSource = [2,1,0,-1,-2,3.092,2.092,1.092,0.092,-0.908,-1.908,3.079,2.079,1.079,0.079]
-# xSource = [0]
-# ySource = [0]
-# zSource = [0]
-#
-#
-# #specialPoints = SpecialPointsClass(xPoints = [0], yPoints = [0.1], zPoints = [0])
-#
-#
-#
-# for i in range(specialPoints.numSpecialPoints):
-#     dose = 0
-#     myPoint = PointPosition(
-#         specialPoints.xPoints[i],
-#         specialPoints.yPoints[i],
-#         specialPoints.zPoints[i])
-#     for j in range(numSources):
-#         myDose = calculate_my_dose(sourceTrain[j], myPoint, anisotropyFunc, radialDose)
-#         dose += myDose.doseTotalOut
-#     print "%.3f" % dose
-#
-#    # myDose.print_values()
-#
-# # for dists in dists_cm:
-# #    myPoint = PointPosition(x=dists,y=-1,z=-1)
-# #    myDose = calculate_my_dose(mySource, myPoint, anisotropyFunc, radialDose)
-# #    myDose.print_dose()
-# #    # myDose.print_values()
 
 if __name__ == "__main__":
     print("Ran function")

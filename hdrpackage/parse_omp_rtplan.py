@@ -1,3 +1,6 @@
+"""Classes for holding parsed data from RTPlan file"""
+
+
 class BrachyPlan(object):
     def __init__(self, ds):
         self.ds = ds
@@ -66,7 +69,4 @@ class PointComparison(object):
         self.abs_difference = omp_dose-pytg43_dose
         self.percentage_difference = 100*((self.omp_dose/self.pytg43_dose)-1)
 
-
-if __name__ == "__main__":
-    print("Code ran successfully")
 

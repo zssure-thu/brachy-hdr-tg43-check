@@ -1,5 +1,14 @@
 # brachy-hdr-tg43-check
-An app to calculate doses from input RTPlan file
 
-## Purpose
-To quickly perform independent dose checks using the TG43 formalism on Oncentra Masterplan RTPlan dicom files created from HDR brachytherapy plans.
+
+Purpose
+----------------------
+A command line interface to independently calculate doses from Oncentra MasterPlan brachytherapy RTPlan files.
+
+Bug reports
+-----------
+Please report bugs to the author.
+
+
+Build instructions
+==================
