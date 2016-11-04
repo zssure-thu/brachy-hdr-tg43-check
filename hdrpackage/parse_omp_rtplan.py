@@ -1,7 +1,7 @@
 class BrachyPlan(object):
     def __init__(self, ds):
         self.ds = ds
-        self.applicator = self.ds.ApplicationSetupSequence[0][0x300b, 0x100f].value.decode('utf-8')
+        self.applicator = self.ds.ApplicationSetupSequence[0][0x300b, 0x100f].value
         self.save_to_txt()
         self.points = self.get_poi()
         self.channel_numbers = self.get_channel_numbers()

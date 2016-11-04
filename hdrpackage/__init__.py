@@ -1,1 +1,1 @@
-from .omp_plan import BrachyPlan
+from .parse_omp_rtplan import BrachyPlan
